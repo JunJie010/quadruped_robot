@@ -120,15 +120,15 @@ void Voice_play(uint8_t *yinpin)
 {
 	uint8_t cnt=0;             //定义和校验
 	Serial_SendByte(0xAA);               //发送起始码
-	cnt+=0xAA;
+	cnt += 0xAA;
 	Serial_SendByte(0x08);               //发送指令类型
-	cnt+=0x08;
+	cnt += 0x08;
 	Serial_SendByte(strlen(yinpin)+1);   //发送数据长度
-	cnt+=strlen(yinpin)+1;
-	for(int i=0;i<strlen(yinpin);i++)    //发送数据
+	cnt += strlen(yinpin)+1;
+	for(int i=0 ; i<strlen(yinpin) ; i++)    //发送数据
 	{
-		Serial_SendByte(yinpin[i]); 
-		cnt = cnt+yinpin[i];
+		Serial_SendByte(yinpin[i]);      
+		cnt += yinpin[i];
 	}
 	Serial_SendByte(cnt&0xFF);           //发送和校验
 }
