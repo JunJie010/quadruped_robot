@@ -76,7 +76,20 @@ void ArmCtrl_Angle (ArmDef ArmNum, float Angle)        //输入角度值控制�
 	}
 }
 ```
-
+紧接着，完成功能函数四足机器人动作函数：
+```
+void Arm_Zero();         //初始动作
+void Arm_Li();           //四足立起
+void Arm_Jump();         //跳跃
+void Arm_Push();         //俯卧撑
+void Arm_Hello();        //打招呼
+void Arm_Twisting();     //扭动
+void Arm_Peristalsis();  //蠕动
+void Arm_Left();         //左转
+void Arm_Right();        //右转
+void Arm_ss();           //四足立起
+void Arm_Forward();      //前进
+```
 
 ***
 后面会继续更新，请等待
