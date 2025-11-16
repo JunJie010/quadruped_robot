@@ -48,28 +48,28 @@ void ArmCtrl_Angle (ArmDef ArmNum, float Angle)        //输入角度值控制�
 	switch (ArmNum)                                   //选择对应舵机号控制角度
 	{
 		case ARM_RIGHT_BEFORE_L:			
-			TIM_SetCompare3(TIM4, Compare);		//*
+			TIM_SetCompare3(TIM4, Compare);		
 			break;
 		case ARM_RIGHT_BEFORE_H:
-			TIM_SetCompare4(TIM4, Compare);		//*
+			TIM_SetCompare4(TIM4, Compare);		
 			break;
 		case ARM_RIGHT_AFTER_H:
-			TIM_SetCompare1(TIM4, Compare);		//*
+			TIM_SetCompare1(TIM4, Compare);		
 			break;
 		case ARM_RIGHT_AFTER_L:
-			TIM_SetCompare2(TIM4, Compare);		//*
+			TIM_SetCompare2(TIM4, Compare);		
 			break;
 		case ARM_LEFT_BEFORE_L:
-			TIM_SetCompare1(TIM3, Compare);		//*
+			TIM_SetCompare1(TIM3, Compare);	
 			break;
 		case ARM_LEFT_BEFORE_H:					
-			TIM_SetCompare2(TIM3, Compare);		//*
+			TIM_SetCompare2(TIM3, Compare);		
 			break;
 		case ARM_LEFT_AFTER_H:
-			TIM_SetCompare1(TIM5, Compare);		//*
+			TIM_SetCompare1(TIM5, Compare);		
 			break;
 		case ARM_LEFT_AFTER_L:
-			TIM_SetCompare2(TIM5, Compare);		//*
+			TIM_SetCompare2(TIM5, Compare);	
 			break;
 		default:
 			break;
