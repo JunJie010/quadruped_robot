@@ -28,6 +28,12 @@ PWM(Pulse Width Modulation)脉冲宽度调制，在具有惯性的系统中，�
 - arm0---PB8---TIM4_CH3-----右前下
 - arm1---PB9---TIM4_CH4-----右前上
 - arm2---PB6---TIM4_CH1-----右后上
-- 
+- arm3---PB7---TIM4_CH2-----右后下
+- arm4---PA6---TIM3_CH1-----左前下
+- arm5---PA7---TIM3_CH2-----无反应
+- arm6---PA0---TIM5_CH1-----左后上
+- arm7---PA1---TIM5_CH2-----左后下
+
+
 ***
 后面会继续更新，请等待
