@@ -148,7 +148,15 @@ const  char *voice_buff[] = {
 	"00010"			//俯卧撑
 };
 ```
-
+同时，也可以对音量进行调节：
+```
+void Set_Song_Volume(unsigned char volume_num)          //定义音量大小函数
+{
+	char Play_song_volume[4]={0xAA,0x13,0x01,0x09};     //设置音量数组
+	Play_song_volume[3] = volume_num;                   //音量值进行赋值
+	Voice_SendData((u8*)Play_song_volume,sizeof(Play_song_volume));
+}
+```
 ***
 
 ***
