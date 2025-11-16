@@ -197,20 +197,20 @@ uint8_t ESP8266_Init()      //WIFI初始化
 {
 	u8 ret = 0;
 	Usart2_Init(115200);              //ESP8266默认波特率：115200
-	usart2_send_str((u8 *)"+++");
+	usart2_send_str((uint8_t *)"+++");
 	delay_ms(300);                    //退出透传模式
-	usart2_send_str((u8 *)"AT\r\n"); 
+	usart2_send_str((uint8_t *)"AT\r\n"); 
 	delay_ms(300);                    //随便发送AT指令以跳过错误
-	usart2_send_str((u8 *)"AT+RESTORE\r\n");
+	usart2_send_str((uint8_t *)"AT+RESTORE\r\n");
 	delay_ms(2000);                   //恢复出厂设置
-	ret = Esp8266_SendCmd((u8 *)"AT+CWMODE=1\r\n",(u8 *)"OK");     //设置ESP8266为客户端模式
+	ret = Esp8266_SendCmd((u8 *)"AT+CWMODE=1\r\n",(uint8_t *)"OK");     //设置ESP8266为客户端模式
 	if(ret != 0)
 	{
 		printf("ESP8266设置客户端模式失败\r\n");
 		return 1;
 	}
 		printf("ESP8266设置客户端模式成功\r\n");
-	ret = Esp8266_SendCmd((u8 *)"AT+CIPMODE=1\r\n",(u8 *)"OK");    //设置ESP8266为透传模式
+	ret = Esp8266_SendCmd((u8 *)"AT+CIPMODE=1\r\n",(uint8_t *)"OK");    //设置ESP8266为透传模式
 	if(ret != 0)
 	{
 		printf("ESP8266设置透传模式失败\r\n");
@@ -220,6 +220,36 @@ uint8_t ESP8266_Init()      //WIFI初始化
 	
 	printf("ESP8266初始化成功\r\n");
 	return 0;
+}
+
+uint8_t ESP8266_ConnectWifi(u8 *ssid,u8 *pwd)      //连接软路由
+{
+	uint8_t cnt = 0;
+	uint8_t wifi_buff[150] = {0};         //字符串拼接                
+	sprintf((char *)wifi_buff,"AT+CWJAP=\"%s\",\"%s\"\r\n",ssid,pwd);
+	A:
+	usart2_send_str((u8 *)wifi_buff);     //发送拼接好的指令
+	while(1)
+	{
+		while(!u2.flag);          //等待数据接收完成
+		u2.flag = 0;
+		
+		if(strstr((const char *)u2.buff,"OK") != NULL)      //WIFI连接成功
+		{
+			printf("WIFI连接成功!!!!\r\n");
+			return 0;
+		}
+		if(strstr((const char *)u2.buff,"FAIL") != NULL)    //WIFI连接失败
+		{
+			printf("WIFI连接失败，正在第%d次重新连接....\r\n",++cnt);
+			if(cnt == 3)
+			{
+				printf("WIFI连接失败!!!!!\r\n");
+				return 1;
+			}
+			goto A;
+		}	
+	}	
 }
 ```
 
