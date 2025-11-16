@@ -34,6 +34,49 @@ PWM(Pulse Width Modulation)脉冲宽度调制，在具有惯性的系统中，�
 - arm6---PA0---TIM5_CH1-----左后上
 - arm7---PA1---TIM5_CH2-----左后下
 
+在完成舵机初始化函数后，只需再编写舵机驱动函数即可编写机器人动作函数
+```
+#define PWM_MIX (500)
+#define PWM_MAX (2500)
+#define ANGLE_MAX (180.0f)
+#define ANGLE_PWM ((PWM_MAX - PWM_MIX)/ANGLE_MAX)       //宏定义SG90舵机相关参数
+
+void ArmCtrl_Angle (ArmDef ArmNum, float Angle)        //输入角度值控制对应的舵机角度
+{
+  uint16_t Compare;
+	Compare = PWM_MIX + ANGLE_PWM*Angle - 1;          //舵机角度换算公式
+	switch (ArmNum)                                   //选择对应舵机号控制角度
+	{
+		case ARM_RIGHT_BEFORE_L:			
+			TIM_SetCompare3(TIM4, Compare);		//*
+			break;
+		case ARM_RIGHT_BEFORE_H:
+			TIM_SetCompare4(TIM4, Compare);		//*
+			break;
+		case ARM_RIGHT_AFTER_H:
+			TIM_SetCompare1(TIM4, Compare);		//*
+			break;
+		case ARM_RIGHT_AFTER_L:
+			TIM_SetCompare2(TIM4, Compare);		//*
+			break;
+		case ARM_LEFT_BEFORE_L:
+			TIM_SetCompare1(TIM3, Compare);		//*
+			break;
+		case ARM_LEFT_BEFORE_H:					
+			TIM_SetCompare2(TIM3, Compare);		//*
+			break;
+		case ARM_LEFT_AFTER_H:
+			TIM_SetCompare1(TIM5, Compare);		//*
+			break;
+		case ARM_LEFT_AFTER_L:
+			TIM_SetCompare2(TIM5, Compare);		//*
+			break;
+		default:
+			break;
+	}
+}
+```
+
 
 ***
 后面会继续更新，请等待
