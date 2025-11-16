@@ -192,6 +192,12 @@ uint8_t Esp8266_SendCmd(u8 *cmd,u8 *respond)     //发送命令且判断是否�
 }
 ```
 此处，我们采用AP工作模式，设置ESP8266为客户端模式，创建小范围局域网，与上位机联网
+
+其中，连接软路由指令：```AT+CWJAP="WIFI账号名","WIFI密码"\r\n```
+
+连接服务器指令：```AT+CIPSTART="TCP","192.168.31.207",8080\r\n```
+
+电脑端：连接手机热点 查IP：控制台 win + R 输入cmd，在控制台中输入ipconfig，回车，在上位机软件中查找
 ```
 uint8_t ESP8266_Init()      //WIFI初始化
 {
@@ -222,7 +228,7 @@ uint8_t ESP8266_Init()      //WIFI初始化
 	return 0;
 }
 
-uint8_t ESP8266_ConnectWifi(u8 *ssid,u8 *pwd)      //连接软路由
+uint8_t ESP8266_ConnectWifi(u8 *ssid,u8 *pwd)      //连接软路由  WIFI账号 WIFI密码
 {
 	uint8_t cnt = 0;
 	uint8_t wifi_buff[150] = {0};         //字符串拼接                
@@ -250,6 +256,43 @@ uint8_t ESP8266_ConnectWifi(u8 *ssid,u8 *pwd)      //连接软路由
 			goto A;
 		}	
 	}	
+}
+
+uint8_t Esp8266_ConnectServer(u8 *ip,u8 *port)    //连接服务器 IP地址 端口号
+{
+	
+	uint8_t cat[200]={0};
+	uint8_t sever_cnt = 0;
+	strcat((char *)cat,"AT+CIPSTART=\"TCP\",\"");
+	strcat((char *)cat,(const char *)ip);
+	strcat((char *)cat,"\",");
+	strcat((char *)cat,(const char *)port);
+	strcat((char *)cat,"\r\n");
+	B:
+	usart2_send_str(cat);  //发送拼接完成的指令
+	
+	while(1)
+	{
+		while(!u2.flag);//等待数据接收完成
+		u2.flag = 0;
+
+		if(strstr((const char *)u2.buff,"OK")!=NULL)
+		{
+			printf("连接服务器成功\r\n");
+			usart2_send_str((u8 *)"AT+CIPSEND\r\n");//进入发送模式命令    >
+			return 0;
+		}
+		if(strstr((const char *)u2.buff,"ERROR")!=NULL)
+		{
+			if(sever_cnt == 3)
+			{
+				printf("连接服务器失败\r\n");
+				return 1;
+			}
+			printf("连接服务器失败，正在尝试第%d次重试\r\n",++sever_cnt);
+			goto B;
+		}	
+	}		
 }
 ```
 
