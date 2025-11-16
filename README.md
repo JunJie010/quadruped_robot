@@ -157,6 +157,7 @@ void Set_Song_Volume(unsigned char volume_num)          //定义音量大小函�
 	Voice_SendData((u8*)Play_song_volume,sizeof(Play_song_volume));
 }
 ```
+注意，盘符定义，切换盘符后处于停止状态：USB:00 SD:01 FLASH:02 NO_DEVICE:FF
 ***
 
 ***
