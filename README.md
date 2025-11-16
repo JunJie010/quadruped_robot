@@ -89,6 +89,7 @@ void Arm_Left();         //左转
 void Arm_Right();        //右转
 void Arm_ss();           //四足立起
 void Arm_Forward();      //前进
+//注意，此处只做简单展示，详细代码请看控制代码
 ```
 
 ***
