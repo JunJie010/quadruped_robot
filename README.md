@@ -109,9 +109,30 @@ JQ8900-16P是一个集成了16位的MCU，以及一个专门针对音频解码�
 * 数据长度：指令中的数据的字节数，strlen(数据)+1
 * 数据：指令中的相关数据，当数据长度为 1 时,表示只有 CMD,没有数据位，指令类型是0x08时，这跟数据代表的是音频的路径和名字
 * 和检验：为之前所有字节之和的低 8 位,即起始码到数据相加后取低 8 位，需要发送校验数据给到语音播报模块
+```
+void Serial_SendByte(uint8_t x)          //设置串口发送字节函数
+{
+	USART_SendData(USART1, x);
+	while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);  //等待，为空可发送数据
+}
 
-
-
+void Voice_play(uint8_t *yinpin)
+{
+	uint8_t cnt=0;             //定义和校验
+	Serial_SendByte(0xAA);               //发送起始码
+	cnt+=0xAA;
+	Serial_SendByte(0x08);               //发送指令类型
+	cnt+=0x08;
+	Serial_SendByte(strlen(yinpin)+1);   //发送数据长度
+	cnt+=strlen(yinpin)+1;
+	for(int i=0;i<strlen(yinpin);i++)    //发送数据
+	{
+		Serial_SendByte(yinpin[i]); 
+		cnt = cnt+yinpin[i];
+	}
+	Serial_SendByte(cnt&0xFF);           //发送和校验
+}
+```
 
 
 ***
