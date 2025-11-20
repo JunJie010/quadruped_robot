@@ -209,20 +209,7 @@ uint8_t ESP8266_Init()      //WIFI初始化
 	usart2_send_str((uint8_t *)"AT+RESTORE\r\n");
 	delay_ms(2000);                   //恢复出厂设置
 	ret = Esp8266_SendCmd((u8 *)"AT+CWMODE=1\r\n",(uint8_t *)"OK");     //设置ESP8266为客户端模式
-	if(ret != 0)
-	{
-		printf("ESP8266设置客户端模式失败\r\n");
-		return 1;
-	}
-		printf("ESP8266设置客户端模式成功\r\n");
 	ret = Esp8266_SendCmd((u8 *)"AT+CIPMODE=1\r\n",(uint8_t *)"OK");    //设置ESP8266为透传模式
-	if(ret != 0)
-	{
-		printf("ESP8266设置透传模式失败\r\n");
-		return 2;
-	}
-	printf("ESP8266设置透传模式成功\r\n");
-	
 	printf("ESP8266初始化成功\r\n");
 	return 0;
 }
