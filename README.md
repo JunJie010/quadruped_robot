@@ -225,28 +225,14 @@ uint8_t ESP8266_ConnectWifi(u8 *ssid,u8 *pwd)      //连接软路由  WIFI账号
 	{
 		while(!u2.flag);          //等待数据接收完成
 		u2.flag = 0;
-		
 		if(strstr((const char *)u2.buff,"OK") != NULL)      //WIFI连接成功
-		{
-			printf("WIFI连接成功!!!!\r\n");
-			return 0;
-		}
 		if(strstr((const char *)u2.buff,"FAIL") != NULL)    //WIFI连接失败
-		{
-			printf("WIFI连接失败，正在第%d次重新连接....\r\n",++cnt);
-			if(cnt == 3)
-			{
-				printf("WIFI连接失败!!!!!\r\n");
-				return 1;
-			}
-			goto A;
-		}	
+		{goto A;}	
 	}	
 }
 
 uint8_t Esp8266_ConnectServer(u8 *ip,u8 *port)    //连接服务器 IP地址 端口号
 {
-	
 	uint8_t cat[200]={0};
 	uint8_t sever_cnt = 0;
 	strcat((char *)cat,"AT+CIPSTART=\"TCP\",\"");
@@ -256,28 +242,13 @@ uint8_t Esp8266_ConnectServer(u8 *ip,u8 *port)    //连接服务器 IP地址 端
 	strcat((char *)cat,"\r\n");
 	B:
 	usart2_send_str(cat);  //发送拼接完成的指令
-	
 	while(1)
 	{
 		while(!u2.flag);//等待数据接收完成
 		u2.flag = 0;
-
-		if(strstr((const char *)u2.buff,"OK")!=NULL)
-		{
-			printf("连接服务器成功\r\n");
-			usart2_send_str((u8 *)"AT+CIPSEND\r\n");//进入发送模式命令    >
-			return 0;
-		}
-		if(strstr((const char *)u2.buff,"ERROR")!=NULL)
-		{
-			if(sever_cnt == 3)
-			{
-				printf("连接服务器失败\r\n");
-				return 1;
-			}
-			printf("连接服务器失败，正在尝试第%d次重试\r\n",++sever_cnt);
-			goto B;
-		}	
+		if(strstr((const char *)u2.buff,"OK")!=NULL)       //服务器连接成功
+		if(strstr((const char *)u2.buff,"ERROR")!=NULL)    //服务器连接失败
+		{goto B;}	
 	}		
 }
 //注意，此处只做简单展示，详细代码请看控制代码
