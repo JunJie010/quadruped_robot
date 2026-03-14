@@ -2,7 +2,7 @@
 
 ## 项目预览
 ![项目展示](制作过程/成品展示.jpg)
-[项目演示视频](https://www.bilibili.com/video/BV1BawszsE6p/?spm_id_from=333.1387.homepage.video_card.click&vd_source=95764cfd8bb1371dc92f356cd7f2fb75)
+[跳转项目演示视频](https://www.bilibili.com/video/BV1BawszsE6p/?spm_id_from=333.1387.homepage.video_card.click&vd_source=95764cfd8bb1371dc92f356cd7f2fb75)
 ## 项目功能
 
 - **WiFi 远程控制**  
